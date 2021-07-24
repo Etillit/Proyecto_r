@@ -215,9 +215,96 @@ pre code {
 
 
 <!-- rnb-text-begin -->
+<p>La sepsis ocasiona en el mundo más de mil muertes cada día, muchos de estos pacientes adquieren la infección estando hospitalizados y constituye la complicación intrahospitalaria más frecuente. La infección de pacientes por las manos contaminadas del personal de salud es una de las formas de diseminación de los agentes infecciosos. La higiene de las manos es el factor individual más importante para el control de las infecciones, es difícil entender que un hecho tan rutinario en la práctica de la medicina, como lavarse las manos previo a examinar a un paciente, haya causado tanta controversia en la época de 1800.</p>
+<p>A principios de la década de 1840 se descubrió una enfermedad mortal que afectaba a las mujeres que acababan de dar a luz, cerca del 10% de las mujeres morían a causa de esta enfermedad y el origen provenía de las manos contaminadas del personal médico que atendía los partos.</p>
+<p>En este proyecto, vamos a analizar los datos que demuestran la importancia del lavado de manos, identificando anomalías en los procedimientos médicos.</p>
+<ol style="list-style-type: decimal">
+<li>Conociendo los datos</li>
+</ol>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIzEuMS4gQ2FyZ2Ftb3MgZWwgcGFxdWV0ZSB0aWR5dmVyc2VcbmxpYnJhcnkodGlkeXZlcnNlKVxuXG4jMS4yLiBMZWVtb3MgZWwgYXJjaGl2byBkZWF0aHNfaGFuZHdhc2hpbmcuY3N2IHVzYW5kbyByZWFkX2NzdiB5IGxvIGFzaWduYW1vcyBhXG4jICAgICBsYSB2YXJpYWJsZSB5ZWFybHlcbnllYXJseSA8LSByZWFkX2NzdihcImRlYXRoc19oYW5kd2FzaGluZy5jc3ZcIilcblxuIzEuMy4gSW1wcmltaW1vcyBsYSB2YXJpYWJsZSB5ZWFybHlcbnByaW50KHllYXJseSlcbmBgYCJ9 -->
+<pre class="r"><code>#1.1. Cargamos el paquete tidyverse
+library(tidyverse)
+
+#1.2. Leemos el archivo deaths_handwashing.csv usando read_csv y lo asignamos a
+#     la variable yearly
+yearly &lt;- read_csv(&quot;deaths_handwashing.csv&quot;)
+
+#1.3. Imprimimos la variable yearly
+print(yearly)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<ol start="2" style="list-style-type: decimal">
+<li><p>El alarmante número de muertes</p>
+<p>La tabla anterior muestra el número de mujeres que dieron a luz durante los años 1841 a 1846 en una ciudad al noreste de Austria, en dos clínicas en particular. Notará que dar a luz era muy peligroso; un número alarmante de mujeres murió como resultado del parto. Vemos esto con mayor claridad si observamos la proporción de muertes con respecto al número de mujeres que dieron a luz.</p></li>
+</ol>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIzIuMS4gVXNhbW9zIG11dGF0ZSBwYXJhIGFncmVnYXIgbGEgY29sdW1uYSBwcm9wb3J0aW9uX2RlYXRocyBhIHllYXJseSwgZXN0YVxuIyAgICAgbnVldmEgY29sdW1uYSBjYWxjdWxhcsOhIGxhIHByb3BvcmNpw7NuIGRlIG11ZXJ0ZXMgcG9yIG51bWVybyBkZSBcbiMgICAgIG5hY2ltaWVudG9zLiBcbnllYXJseSA8LSB5ZWFybHkgJT4lXG4gIG11dGF0ZShwcm9wb3J0aW9uX2RlYXRocyA9IGRlYXRocyAvIGJpcnRocylcblxuIzIuMi4gSW1wcmltaW1vcyB5ZWFybHlcbnByaW50KHllYXJseSlcbmBgYCJ9 -->
+<pre class="r"><code>#2.1. Usamos mutate para agregar la columna proportion_deaths a yearly, esta
+#     nueva columna calculará la proporción de muertes por numero de 
+#     nacimientos. 
+yearly &lt;- yearly %&gt;%
+  mutate(proportion_deaths = deaths / births)
+
+#2.2. Imprimimos yearly
+print(yearly)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<ol start="3" style="list-style-type: decimal">
+<li><p>Muerte en las clínicas</p>
+<p>Si ahora graficamos la proporción de muertes tanto en la clínica 1 como en la clínica 2, veremos un patrón curioso.</p></li>
+</ol>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIzMuMS4gVXNhbW9zIGdncGxvdCBwYXJhIGhhY2VyIHVuYSBncsOhZmljYSBsaW5lYWwgZGUgcHJvcG9ydGlvbl9kZWF0aHMgcG9yIGHDsW9cbiMgICAgIChjb2x1bW5hIHllYXIpIGNvbiB1bmEgbMOtbmVhIHBvciBjbMOtbmljYS5cbmdncGxvdCh5ZWFybHksIGFlcyh4PXllYXIsIHk9IHByb3BvcnRpb25fZGVhdGhzLCBncm91cCA9IGNsaW5pYywgc2hhcGUgPSBjbGluaWMpKSArXG4gIGdlb21fbGluZSgpICtcbiAgZ2VvbV9wb2ludCgpXG5gYGAifQ== -->
+<pre class="r"><code>#3.1. Usamos ggplot para hacer una gráfica lineal de proportion_deaths por año
+#     (columna year) con una línea por clínica.
+ggplot(yearly, aes(x=year, y= proportion_deaths, group = clinic, shape = clinic)) +
+  geom_line() +
+  geom_point()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIzMuMi4gTGFzIGxpbmVhcyBkZWJlbiB0ZW5lciBjb2xvcmVzIGRpc3RpbnRvcy5cbmdncGxvdCh5ZWFybHksIGFlcyh4PXllYXIsIHk9IHByb3BvcnRpb25fZGVhdGhzLCBjb2xvciA9IGNsaW5pYykpICtcbiAgZ2VvbV9saW5lKCkgXG5gYGAifQ== -->
+<pre class="r"><code>#3.2. Las lineas deben tener colores distintos.
+ggplot(yearly, aes(x=year, y= proportion_deaths, color = clinic)) +
+  geom_line() </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<ol start="4" style="list-style-type: decimal">
+<li><p>Comienza el lavado de manos</p>
+<p>¿Por qué la proporción de muertes es mucho más alta en la Clínica 1? La única diferencia en ambas clínicas era que muchos estudiantes de medicina trabajaban en la Clínica 1, mientras que en la Clínica 2 no habían tantos. Otro dato interesante es que los médicos que atendían partos solo se encargaban de esa función, mientras que los estudiantes también pasaban tiempo en las salas de autopsias examinando cadáveres.</p>
+<p>Se empezó a sospechar que algo en los cadáveres, propagado de las manos de los estudiantes de medicina, causaba la enfermedad. Entonces, en un intento desesperado por detener las altas tasas de mortalidad, se decretó: ¡Lávese las manos en todo momento!</p></li>
+</ol>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIzQuMS4gQ2FyZ2Ftb3MgbG9zIGRhdG9zIG1lbnN1YWxlcyBkZSBsYSBDbMOtbmljYSAxIHBhcmEgdmVyIHNpIGVsIGxhdmFkbyBkZSBcbiMgICAgIG1hbm9zIHR1dm8gYWxnw7puIGVmZWN0bywgcGFyYSBlc3RvIGxlYSBlbCBhcmNoaXZvIGRlYXRoc19jbGluaWNfMS5jc3YgeSBcbiMgICAgIGxvIGFzw61nYW1vcyBhIGxhIHZhcmlhYmxlIG1vbnRobHkuXG5tb250aGx5IDwtIHJlYWRfY3N2KFwiZGVhdGhzX2NsaW5pY18xLmNzdlwiKVxubW9udGhseVxuXG4jNC4yLiBBZ3JlZ2Ftb3MgbGEgY29sdW1uYSBwcm9wb3J0aW9uX2RlYXRocyBhIG1vbnRobHksIGVzdGEgbnVldmEgY29sdW1uYSBzZVxuIyAgICAgY2FsY3VsYXLDoSBjb21vIGxhIHByb3BvcmNpw7NuIGRlIG11ZXJ0ZXMgcG9yIG7Dum1lcm8gZGUgbmFjaW1pZW50b3MuXG5tb250aGx5IDwtIG1vbnRobHkgJT4lXG4gIG11dGF0ZShwcm9wb3J0aW9uX2RlYXRocyA9IGRlYXRocy9iaXJ0aHMpXG5cbiM0LjMuIEltcHJpbWltb3MgbGFzIHByaW1lcmFzIGZpbGFzIGRlIG1vbnRobHkgdXNhbmRvIGxhIGZ1bmNpw7NuIGhlYWQoKS5cbmhlYWQobW9udGhseSlcbmBgYCJ9 -->
+<pre class="r"><code>#4.1. Cargamos los datos mensuales de la Clínica 1 para ver si el lavado de 
+#     manos tuvo algún efecto, para esto lea el archivo deaths_clinic_1.csv y 
+#     lo asígamos a la variable monthly.
+monthly &lt;- read_csv(&quot;deaths_clinic_1.csv&quot;)
+monthly
+
+#4.2. Agregamos la columna proportion_deaths a monthly, esta nueva columna se
+#     calculará como la proporción de muertes por número de nacimientos.
+monthly &lt;- monthly %&gt;%
+  mutate(proportion_deaths = deaths/births)
+
+#4.3. Imprimimos las primeras filas de monthly usando la función head().
+head(monthly)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KTGEgc2Vwc2lzIG9jYXNpb25hIGVuIGVsIG11bmRvIG3DoXMgZGUgbWlsIG11ZXJ0ZXMgY2FkYSBkw61hLCBtdWNob3MgZGUgZXN0b3MgDQpwYWNpZW50ZXMgYWRxdWllcmVuIGxhIGluZmVjY2nDs24gZXN0YW5kbyBob3NwaXRhbGl6YWRvcyB5IGNvbnN0aXR1eWUgbGEgDQpjb21wbGljYWNpw7NuIGludHJhaG9zcGl0YWxhcmlhIG3DoXMgZnJlY3VlbnRlLiBMYSBpbmZlY2Npw7NuIGRlIHBhY2llbnRlcyBwb3IgbGFzIA0KbWFub3MgY29udGFtaW5hZGFzIGRlbCBwZXJzb25hbCBkZSBzYWx1ZCBlcyB1bmEgZGUgbGFzIGZvcm1hcyBkZSBkaXNlbWluYWNpw7NuIGRlDQpsb3MgYWdlbnRlcyBpbmZlY2Npb3Nvcy4gTGEgaGlnaWVuZSBkZSBsYXMgbWFub3MgZXMgZWwgZmFjdG9yIGluZGl2aWR1YWwgbcOhcyANCmltcG9ydGFudGUgcGFyYSBlbCBjb250cm9sIGRlIGxhcyBpbmZlY2Npb25lcywgZXMgZGlmw61jaWwgZW50ZW5kZXIgcXVlIHVuIGhlY2hvIA0KdGFuIHJ1dGluYXJpbyBlbiBsYSBwcsOhY3RpY2EgZGUgbGEgbWVkaWNpbmEsIGNvbW8gbGF2YXJzZSBsYXMgbWFub3MgcHJldmlvIGEgDQpleGFtaW5hciBhIHVuIHBhY2llbnRlLCBoYXlhIGNhdXNhZG8gdGFudGEgY29udHJvdmVyc2lhIGVuIGxhIMOpcG9jYSBkZSAxODAwLg0KDQpBIHByaW5jaXBpb3MgZGUgbGEgZMOpY2FkYSBkZSAxODQwIHNlIGRlc2N1YnJpw7MgdW5hIGVuZmVybWVkYWQgbW9ydGFsIHF1ZSANCmFmZWN0YWJhIGEgbGFzIG11amVyZXMgcXVlIGFjYWJhYmFuIGRlIGRhciBhIGx1eiwgY2VyY2EgZGVsIDEwJSBkZSBsYXMgbXVqZXJlcyANCm1vcsOtYW4gYSBjYXVzYSBkZSBlc3RhIGVuZmVybWVkYWQgeSBlbCBvcmlnZW4gcHJvdmVuw61hIGRlIGxhcyBtYW5vcyBjb250YW1pbmFkYXMNCmRlbCBwZXJzb25hbCBtw6lkaWNvIHF1ZSBhdGVuZMOtYSBsb3MgcGFydG9zLg0KDQpFbiBlc3RlIHByb3llY3RvLCB2YW1vcyBhIGFuYWxpemFyIGxvcyBkYXRvcyBxdWUgZGVtdWVzdHJhbiBsYSBpbXBvcnRhbmNpYSBkZWwgDQpsYXZhZG8gZGUgbWFub3MsIGlkZW50aWZpY2FuZG8gYW5vbWFsw61hcyBlbiBsb3MgcHJvY2VkaW1pZW50b3MgbcOpZGljb3MuDQoNCjEuIENvbm9jaWVuZG8gbG9zIGRhdG9zDQoNCmBgYHtyfQ0KIzEuMS4gQ2FyZ2Ftb3MgZWwgcGFxdWV0ZSB0aWR5dmVyc2UNCmxpYnJhcnkodGlkeXZlcnNlKQ0KDQojMS4yLiBMZWVtb3MgZWwgYXJjaGl2byBkZWF0aHNfaGFuZHdhc2hpbmcuY3N2IHVzYW5kbyByZWFkX2NzdiB5IGxvIGFzaWduYW1vcyBhDQojICAgICBsYSB2YXJpYWJsZSB5ZWFybHkNCnllYXJseSA8LSByZWFkX2NzdigiZGVhdGhzX2hhbmR3YXNoaW5nLmNzdiIpDQoNCiMxLjMuIEltcHJpbWltb3MgbGEgdmFyaWFibGUgeWVhcmx5DQpwcmludCh5ZWFybHkpDQpgYGANCg0KMi4gRWwgYWxhcm1hbnRlIG7Dum1lcm8gZGUgbXVlcnRlcw0KDQogICBMYSB0YWJsYSBhbnRlcmlvciBtdWVzdHJhIGVsIG7Dum1lcm8gZGUgbXVqZXJlcyBxdWUgZGllcm9uIGEgbHV6IGR1cmFudGUgbG9zIA0KICAgYcOxb3MgMTg0MSBhIDE4NDYgZW4gdW5hIGNpdWRhZCBhbCBub3Jlc3RlIGRlIEF1c3RyaWEsIGVuIGRvcyBjbMOtbmljYXMgZW4gDQogICBwYXJ0aWN1bGFyLiBOb3RhcsOhIHF1ZSBkYXIgYSBsdXogZXJhIG11eSBwZWxpZ3Jvc287IHVuIG7Dum1lcm8gYWxhcm1hbnRlIGRlIA0KICAgbXVqZXJlcyBtdXJpw7MgY29tbyByZXN1bHRhZG8gZGVsIHBhcnRvLiBWZW1vcyBlc3RvIGNvbiBtYXlvciBjbGFyaWRhZCBzaSANCiAgIG9ic2VydmFtb3MgbGEgcHJvcG9yY2nDs24gZGUgbXVlcnRlcyBjb24gcmVzcGVjdG8gYWwgbsO6bWVybyBkZSBtdWplcmVzIHF1ZSANCiAgIGRpZXJvbiBhIGx1ei4NCg0KYGBge3J9DQojMi4xLiBVc2Ftb3MgbXV0YXRlIHBhcmEgYWdyZWdhciBsYSBjb2x1bW5hIHByb3BvcnRpb25fZGVhdGhzIGEgeWVhcmx5LCBlc3RhDQojICAgICBudWV2YSBjb2x1bW5hIGNhbGN1bGFyw6EgbGEgcHJvcG9yY2nDs24gZGUgbXVlcnRlcyBwb3IgbnVtZXJvIGRlIA0KIyAgICAgbmFjaW1pZW50b3MuIA0KeWVhcmx5IDwtIHllYXJseSAlPiUNCiAgbXV0YXRlKHByb3BvcnRpb25fZGVhdGhzID0gZGVhdGhzIC8gYmlydGhzKQ0KDQojMi4yLiBJbXByaW1pbW9zIHllYXJseQ0KcHJpbnQoeWVhcmx5KQ0KYGBgDQoNCjMuIE11ZXJ0ZSBlbiBsYXMgY2zDrW5pY2FzDQoNCiAgIFNpIGFob3JhIGdyYWZpY2Ftb3MgbGEgcHJvcG9yY2nDs24gZGUgbXVlcnRlcyB0YW50byBlbiBsYSBjbMOtbmljYSAxIGNvbW8gZW4gbGENCiAgIGNsw61uaWNhIDIsIHZlcmVtb3MgdW4gcGF0csOzbiBjdXJpb3NvLg0KDQpgYGB7cn0NCiMzLjEuIFVzYW1vcyBnZ3Bsb3QgcGFyYSBoYWNlciB1bmEgZ3LDoWZpY2EgbGluZWFsIGRlIHByb3BvcnRpb25fZGVhdGhzIHBvciBhw7FvDQojICAgICAoY29sdW1uYSB5ZWFyKSBjb24gdW5hIGzDrW5lYSBwb3IgY2zDrW5pY2EuDQpnZ3Bsb3QoeWVhcmx5LCBhZXMoeD15ZWFyLCB5PSBwcm9wb3J0aW9uX2RlYXRocywgZ3JvdXAgPSBjbGluaWMsIHNoYXBlID0gY2xpbmljKSkgKw0KICBnZW9tX2xpbmUoKSArDQogIGdlb21fcG9pbnQoKQ0KYGBgDQoNCmBgYHtyfQ0KIzMuMi4gTGFzIGxpbmVhcyBkZWJlbiB0ZW5lciBjb2xvcmVzIGRpc3RpbnRvcy4NCmdncGxvdCh5ZWFybHksIGFlcyh4PXllYXIsIHk9IHByb3BvcnRpb25fZGVhdGhzLCBjb2xvciA9IGNsaW5pYykpICsNCiAgZ2VvbV9saW5lKCkgDQpgYGANCg0KNC4gQ29taWVuemEgZWwgbGF2YWRvIGRlIG1hbm9zDQogICANCiAgIMK/UG9yIHF1w6kgbGEgcHJvcG9yY2nDs24gZGUgbXVlcnRlcyBlcyBtdWNobyBtw6FzIGFsdGEgZW4gbGEgQ2zDrW5pY2EgMT8gDQogICBMYSDDum5pY2EgZGlmZXJlbmNpYSBlbiBhbWJhcyBjbMOtbmljYXMgZXJhIHF1ZSBtdWNob3MgZXN0dWRpYW50ZXMgZGUgbWVkaWNpbmEgDQogICB0cmFiYWphYmFuIGVuIGxhIENsw61uaWNhIDEsIG1pZW50cmFzIHF1ZSBlbiBsYSBDbMOtbmljYSAyIG5vIGhhYsOtYW4gdGFudG9zLiANCiAgIE90cm8gZGF0byBpbnRlcmVzYW50ZSBlcyBxdWUgbG9zIG3DqWRpY29zIHF1ZSBhdGVuZMOtYW4gcGFydG9zIHNvbG8gc2UgDQogICBlbmNhcmdhYmFuIGRlIGVzYSBmdW5jacOzbiwgbWllbnRyYXMgcXVlIGxvcyBlc3R1ZGlhbnRlcyB0YW1iacOpbiBwYXNhYmFuIA0KICAgdGllbXBvIGVuIGxhcyBzYWxhcyBkZSBhdXRvcHNpYXMgZXhhbWluYW5kbyBjYWTDoXZlcmVzLg0KICAgDQogICBTZSBlbXBlesOzIGEgc29zcGVjaGFyIHF1ZSBhbGdvIGVuIGxvcyBjYWTDoXZlcmVzLCBwcm9wYWdhZG8gZGUgbGFzIG1hbm9zIGRlIA0KICAgbG9zIGVzdHVkaWFudGVzIGRlIG1lZGljaW5hLCBjYXVzYWJhIGxhIGVuZmVybWVkYWQuIEVudG9uY2VzLCBlbiB1biBpbnRlbnRvIA0KICAgZGVzZXNwZXJhZG8gcG9yIGRldGVuZXIgbGFzIGFsdGFzIHRhc2FzIGRlIG1vcnRhbGlkYWQsIHNlIGRlY3JldMOzOiDCoUzDoXZlc2UgDQogICBsYXMgbWFub3MgZW4gdG9kbyBtb21lbnRvIQ0KDQpgYGB7cn0NCiM0LjEuIENhcmdhbW9zIGxvcyBkYXRvcyBtZW5zdWFsZXMgZGUgbGEgQ2zDrW5pY2EgMSBwYXJhIHZlciBzaSBlbCBsYXZhZG8gZGUgDQojICAgICBtYW5vcyB0dXZvIGFsZ8O6biBlZmVjdG8sIHBhcmEgZXN0byBsZWEgZWwgYXJjaGl2byBkZWF0aHNfY2xpbmljXzEuY3N2IHkgDQojICAgICBsbyBhc8OtZ2Ftb3MgYSBsYSB2YXJpYWJsZSBtb250aGx5Lg0KbW9udGhseSA8LSByZWFkX2NzdigiZGVhdGhzX2NsaW5pY18xLmNzdiIpDQptb250aGx5DQoNCiM0LjIuIEFncmVnYW1vcyBsYSBjb2x1bW5hIHByb3BvcnRpb25fZGVhdGhzIGEgbW9udGhseSwgZXN0YSBudWV2YSBjb2x1bW5hIHNlDQojICAgICBjYWxjdWxhcsOhIGNvbW8gbGEgcHJvcG9yY2nDs24gZGUgbXVlcnRlcyBwb3IgbsO6bWVybyBkZSBuYWNpbWllbnRvcy4NCm1vbnRobHkgPC0gbW9udGhseSAlPiUNCiAgbXV0YXRlKHByb3BvcnRpb25fZGVhdGhzID0gZGVhdGhzL2JpcnRocykNCg0KIzQuMy4gSW1wcmltaW1vcyBsYXMgcHJpbWVyYXMgZmlsYXMgZGUgbW9udGhseSB1c2FuZG8gbGEgZnVuY2nDs24gaGVhZCgpLg0KaGVhZChtb250aGx5KQ0KYGBgDQogICANCiAgIA==</div>
 
 
 
