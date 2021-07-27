@@ -102,4 +102,49 @@ monthly <- monthly %>%
 head(monthly)
 ```
    
+5. El efecto del lavado de manos
    
+   Con los datos cargados, ahora podemos ver la proporción de muertes a lo largo
+   del tiempo.
+
+```{r}
+#5.1. Hacemos una gráfica lineal de proportion_deaths por fecha para el data 
+#     frame monthly usando ggplot.
+ggplot(monthly, aes(x=date, y= proportion_deaths)) +
+  geom_line()
+```
+
+```{r}
+#5.2. Utilizamos la función labs para dar al "eje x" y al "eje y" una estética a
+#     las etiquetas.
+ggplot(monthly, aes(x=date, y= proportion_deaths)) +
+  geom_line() +
+   labs(title = "Efecto del lavado de manos en la proporción de muertes \n a lo largo del tiempo") +
+   labs(x = "Tiempo (Años)", y = "Proporcion de Muertes (%)")
+```
+
+6. Los resultados del lavado de manos
+
+   A partir del año 1847 la proporción de muertes se reduce drásticamente y, sí,
+   fue entonces cuando se hizo obligatorio el lavado de manos.
+   
+   El efecto del lavado de manos se hace aún más claro si lo resaltamos en el 
+   gráfico.
+   
+```{r}
+#6.1. Agregamos una columna TRUE/FALSE a monthly llamado handwashing_started, 
+#     que será TRUE a partir del año en que se impuso el lavado de manos.
+monthly <- monthly %>%
+   mutate(handwashing_started = as.numeric(format(date, format = "%Y")) >= 1847)
+
+
+#6.2. Hacemos una gráfica lineal de proportion_deaths por fecha para el data 
+#     frame monthly usando ggplot. Hacemos que el color de la línea dependa de 
+#     handwashing_started.
+ggplot(monthly, aes(x = date, y = proportion_deaths, color = handwashing_started)) +
+   geom_line() +
+   labs(title = "Efecto del lavado de manos en la proporción de muertes \n a lo largo del tiempo") +
+   labs(x = "Tiempo (Años)", y = "Proporcion de Muertes (%)") +
+   labs(colour = "Inicia de lavado \nde manos")
+```
+
