@@ -148,3 +148,36 @@ ggplot(monthly, aes(x = date, y = proportion_deaths, color = handwashing_started
    labs(colour = "Inicia de lavado \nde manos")
 ```
 
+7. ¿Más lavado de manos, menos muertes?
+
+   Nuevamente, las estadísticas demuestran que lavarse las manos tuvo un efecto 
+   enorme. ¿Cuánto redujo la proporción mensual de muertes en promedio?
+   
+```{r}
+#7.1. Utilizamos group_by y summarise para calcular el promedio de 
+#     proportion_deaths antes y después de que se impusiera el lavado de manos.
+monthly %>%
+   group_by(handwashing_started) %>%
+   summarize(mean_proportion_deaths = mean(proportion_deaths))
+```
+
+```{r}
+#7.2. Asignamos el resultado en la variable month_summary e imprímimos.
+month_summary <- monthly %>%
+   group_by(handwashing_started) %>%
+   summarize(mean_proportion_deaths = mean(proportion_deaths))
+
+print(month_summary)
+```
+
+```{r}
+#7.3 El data frame resultante se copia para mostrarlo a continuación:
+
+#     handwashing_started  mean_proportion_deaths
+#        FALSE	                  0.10691840			
+#        TRUE	                  0.03172764	
+
+#    Se observa la una importante disminución, de un 10% de muertes previo a
+#    aplicar el lavado de manos, a un 3% tras aplicar el lavado de manos.
+```
+
